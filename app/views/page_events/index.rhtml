@@ -3,7 +3,7 @@
 <h1>Events for <%= month_with_year(@date) %></h1>
 
 <% if @events_index_page %>
-  <%= link_to image("events/new-event", :alt => "New event"), new_admin_page_child_path(@events_index_page.id), 
+  <%= link_to image("events/new-event", :alt => "New event"), page_new_path(@events_index_page.id), 
         :title => "Create an event at #{@events_index_page.url}", :id => "new_event_top" %>
 <% end %>
 
@@ -64,7 +64,7 @@
 
 <% if @events_index_page %>
   <p>
-    <%= link_to image("events/new-event", :alt => "New event"), new_admin_page_child_path(@events_index_page.id), 
+    <%= link_to image("events/new-event", :alt => "New event"), page_new_path(@events_index_page.id), 
           :title => "Create an event at #{@events_index_page.url}" %>
   </p>
 <% end %>
