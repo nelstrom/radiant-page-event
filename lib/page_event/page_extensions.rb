@@ -20,11 +20,12 @@ module PageEvent::PageExtensions
 			condition_str << " OR (event_datetime_end >= :month_start AND event_datetime_end < :month_end)"
 			condition_str << " AND status_id = #{status}"  if status
 			
-			Page.find(:all,:conditions => [condition_str,
-                                {
-                                  :month_start => month_start,
-                                  :month_end => month_start.next_month
-                                }])			
+			Page.find(:all,:order => default_order, 
+                :conditions => [condition_str,
+                  {
+                    :month_start => month_start,
+                    :month_end => month_start.next_month
+                  }])			
 		end
 		
 		def event_count_by_month(date = Time.now)
@@ -48,7 +49,7 @@ module PageEvent::PageExtensions
 					:event => Time.now.to_s(:db),
 					:status => Status['published'].id
 				}], 
-				:order => "event_datetime_start, event_datetime_end", :limit => limit)		
+				:order => default_order, :limit => limit)		
 		end
     
     
@@ -79,7 +80,7 @@ module PageEvent::PageExtensions
       condition_str = "(event_datetime_start >= :start_date AND event_datetime_start < :end_date)"
       condition_str << " OR (event_datetime_end >= :start_date AND event_datetime_end < :end_date)"	
       conditions = [condition_str, {:start_date => start_date, :end_date => end_date}]
-      Page.find(:all, :conditions => conditions)
+      Page.find(:all, :conditions => conditions, :order => default_order)
     end
     
     
@@ -89,7 +90,7 @@ module PageEvent::PageExtensions
 
       if event = Page.find(:first, 
             :conditions => ["event_datetime_start > ? AND status_id = ?", last_day_of_month, Status['published'].id], 
-            :order => "event_datetime_start ASC")
+            :order => default_order)
 
         if next_event = event.event_datetime_start
           Date.new(next_event.year, next_event.month)
@@ -102,7 +103,7 @@ module PageEvent::PageExtensions
 
       if event = Page.find(:first, 
             :conditions => ["event_datetime_start < ? AND status_id = ?", first_day_of_month, Status['published'].id], 
-            :order => "event_datetime_start DESC")
+            :order => default_order)
 
         if prev_event = event.event_datetime_start
           Date.new(prev_event.year, prev_event.month)
@@ -114,6 +115,10 @@ module PageEvent::PageExtensions
 
     def parse_date_string(input)
       input.split(/\/|-/).map{|n| n.to_i}
+    end
+
+    def default_order
+      "event_datetime_start ASC, event_datetime_end ASC, title ASC"
     end
     
   end
