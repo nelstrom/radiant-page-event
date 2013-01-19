@@ -11,7 +11,9 @@ class PageEventExtension < Radiant::Extension
 		Page.send :include, PageEvent::PageExtensions
 		Page.send :include, PageEventTags
     admin.page.edit.add :parts_bottom, "edit_page_event", :before => 'edit_layout_and_type'
-    admin.tabs.add "Events", "/admin/page_events", :after => "Pages", :visibility => [:all]
+    tab "Content" do
+      add_item "Events", "/admin/page_events"
+    end
   end
   
 end
