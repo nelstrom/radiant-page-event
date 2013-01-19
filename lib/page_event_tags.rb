@@ -173,7 +173,7 @@ module PageEventTags
       tag.locals.page = event
       result << tag.expand
     end
-    result
+    result.join
   end
 
   desc %{
