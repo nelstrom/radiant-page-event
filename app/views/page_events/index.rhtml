@@ -41,7 +41,7 @@
     <% end %>
 
     <tr class="node level-2">
-      <td class="page"><a href="<%= page_edit_url(:id => event) %>" title="<%= event.url %>"><span class="title"><%= event.title %></span></a></td> 
+      <td class="page"><a href="<%= edit_admin_page_path(:id => event) %>" title="<%= event.url %>"><span class="title"><%= event.title %></span></a></td>
       <td><%= event.status.name %></td>
       <td>
         <%= event.event_datetime_start.strftime("%I:%M %p") %>
